@@ -1,0 +1,68 @@
+From d319a1a6723ad20766c18964c289d47c06e19182 Mon Sep 17 00:00:00 2001
+From: Patrik Koncity <pkoncity@redhat.com>
+Date: Fri, 19 Aug 2022 14:03:49 +0200
+Subject: [PATCH 1/2] Add new interfaces for communication with keylime
+
+Policy need rules to communicate with keylime.
+
+AVC:
+allow keylime_agent_t tabrmd_t:dbus send_msg;
+allow keylime_agent_t tabrmd_t:unix_stream_socket { getattr getopt read write };
+
+Create new interfaces to allow keylime
+communicate with keylime.
+
+Signed-off-by: Patrik Koncity <pkoncity@redhat.com>
+---
+ selinux/tabrmd.if | 40 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
+
+diff --git a/selinux/tabrmd.if b/selinux/tabrmd.if
+index 3eb6a30..c04eca0 100644
+--- a/selinux/tabrmd.if
++++ b/selinux/tabrmd.if
+@@ -1 +1,41 @@
+ ## <summary></summary>
++
++########################################
++## <summary>
++##      Create and use a unix stream socket
++## </summary>
++## <param name="domain">
++##      <summary>
++##      Domain allowed access.
++##      </summary>
++## </param>
++#
++interface(`tabrmd_create_unix_stream_sockets',`
++        gen_require(`
++                type tabrmd_t;
++        ')
++
++        allow $1 tabrmd_t:unix_stream_socket create_stream_socket_perms;
++')
++
++########################################
++## <summary>
++##      Send messages to and from 
++##      tabrmd over DBUS.
++## </summary>
++## <param name="domain">
++##      <summary>
++##      Domain allowed access.
++##      </summary>
++## </param>
++#
++interface(`tabr,d_dbus_chat',`
++        gen_require(`
++                type tabrmd_t;
++                class dbus send_msg;
++        ')
++
++        allow $1 tabrmd_t:dbus send_msg;
++        allow tabrmd_t $1:dbus send_msg;
++')
++
+-- 
+2.39.0
+
