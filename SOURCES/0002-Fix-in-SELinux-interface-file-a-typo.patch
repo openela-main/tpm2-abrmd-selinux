@@ -1,0 +1,29 @@
+From 64994388056b9b8c687eef3bc6030f2f40888440 Mon Sep 17 00:00:00 2001
+From: Patrik Koncity <pkoncity@redhat.com>
+Date: Mon, 9 Jan 2023 12:30:42 +0100
+Subject: [PATCH 2/2] Fix in SELinux interface file a typo
+
+In name of interface in SELinux policy is
+typo issue.
+
+Signed-off-by: Patrik Koncity <pkoncity@redhat.com>
+---
+ selinux/tabrmd.if | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/selinux/tabrmd.if b/selinux/tabrmd.if
+index c04eca0..81c7853 100644
+--- a/selinux/tabrmd.if
++++ b/selinux/tabrmd.if
+@@ -29,7 +29,7 @@ interface(`tabrmd_create_unix_stream_sockets',`
+ ##      </summary>
+ ## </param>
+ #
+-interface(`tabr,d_dbus_chat',`
++interface(`tabrmd_dbus_chat',`
+         gen_require(`
+                 type tabrmd_t;
+                 class dbus send_msg;
+-- 
+2.39.0
+
